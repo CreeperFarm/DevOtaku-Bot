@@ -13,13 +13,15 @@ client.on("ready", () => {
     console.log("Logged in as " + client.user.tag + "! The prefix is " + prefix + " .");
 });
 
-client.on('messageCreate', msg => {
+client.on('message', msg => {
 
-    if (msg.author.bot) return
+    console.print(msg.content);
+
+    if (msg.author.bot) return;
 
     if (msg.content === prefix + "ping") {
         msg.reply("Pong!");
-    }
+    };
 });
 
 client.on('guildMemberAdd', member => {

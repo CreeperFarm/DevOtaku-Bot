@@ -1,38 +1,99 @@
-const {Client, Events, GatewayIntentBits} = require('discord.js');
+const {Client, Events, GatewayIntentBits, EmbedBuilder} = require('discord.js');
 const fs = require('fs');
-const client = new Client({intents: [GatewayIntentBits.MessageContent, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]});
+const client = new Client({intents: [GatewayIntentBits.MessageContent, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages]});
 
 let rawdata = fs.readFileSync('config.json');
 let config = JSON.parse(rawdata);
 
 const TOKEN = config.botToken;
-prefix = "!";
+prefix = "?";
 //const prefix = config.prefix;
 
 client.on("ready", () => {
     console.log("Logged in as " + client.user.tag + "! The prefix is " + prefix + " .");
 });
 
+// Message when someone join the server
+
+client.on('guildMemberAdd', member => {
+    const channel = member.guild.channels.cache.find(ch => ch.name === 'arriver-départ-✈');
+    console.log(member.guild.memberCount);
+    if (!channel) return;
+    const embed = new EmbedBuilder()
+        .setColor('#B072FF')
+        .setTitle("Quelqu'un vient d'arriver !")
+        .setAuthor({name: "CreeperFarm", iconURL: "https://avatars.githubusercontent.com/u/62711198?s=96&v=4", url:"https://github.com/CreeperFarm"})
+        .addFields(
+            {name: `Bienvenue à toi ${member} sur le serveur !`},
+            {name: "Nous sommes désormais " + member.guild.memberCount + " sur le serveur !"}
+        )
+    channel.send({ embeds: [embed]});
+});
+
+// Message when someone leave the server
+
+client.on('guildMemberRemove', member => {
+    const channel = member.guild.channels.cache.find(ch => ch.name === 'arriver-départ-✈');
+    if (!channel) return;
+    channel.send(`${member} a quitté le serveur, à bientôt !`);
+});
+
+// Respond to commands
 client.on('messageCreate', msg => {
-
-    console.log(msg.content);
-
     if (msg.author.bot) return;
+
+
+    // Help command
+    if (msg.content === prefix + "help"){
+        const embed = new EmbedBuilder()
+           .setColor('#B072FF')
+           .setTitle("Liste des commandes:")
+           .setAuthor({name: "CreeperFarm", iconURL: "https://avatars.githubusercontent.com/u/62711198?s=96&v=4", url:"https://github.com/CreeperFarm"})
+           .addFields(
+                {name: prefix + "help", value: "Affiche la liste des commandes."},
+                {name: prefix + "ping", value: "Affiche Pong!"},
+                {name: prefix + "twitch", value: "Affiche le lien de la chaîne Twitch."},
+                {name: prefix + "youtube ou " + prefix + "yt ou " + prefix, value: "Affiche le lien de la chaîne Youtube."},
+                {name: prefix + "twitter ou " + prefix + "x", value: "Affiche le lien du compte Twitter (X)."},
+                {name: prefix + "tiktok", value: "Affiche le lien du compte TikTok."},
+                {name: prefix + "github", value: "Affiche le lien du compte GitHub."},
+                {name: prefix + "instagram", value: "Affiche le lien du compte Instagram."},
+                {name: prefix + "kick", value: "Affiche le lien du compte kick."},
+                {name: prefix + "réseaux ou " + prefix + "reseaux", value: "Affiche le lien de tous les réseaux."}
+        
+            )
+           .addFields({name: prefix + "", value: "Add soon ..."});
+        msg.reply({ embeds: [embed]});
+    }
 
     if (msg.content === prefix + "ping") {
         msg.reply("Pong!");
     }
 
-    if (message.content == prefix + "help"){
-        const embed = new Discord.MessageEmbed()
-           .setColor("#B072FF")
-           .setTitle("Liste des commandes:")
-           .setAuthor("CreeperFarm", "https://avatars.githubusercontent.com/u/62711198?s=96&v=4", "https://github.com/CreeperFarm")
-           .addField(prefix + "projet", "Donne le lien du projet CreeperAnime")
-           .addField(prefix + "anime", "Permet la sélection d'un anime")
-           .addField(prefix + "", "Add soon ...");
-  
-        message.reply({ embeds: [embed]});
+    // Social networks links
+    if (msg.content === prefix + "twitch") {
+        msg.reply("Le lien de la chaîne Twitch est https://www.twitch.tv/creeperfarm");
+    }
+    if (msg.content === prefix + "youtube" || msg.content === prefix + "yt" || msg.content === prefix + "ytb") {
+        msg.reply("Le lien de la chaine Youtube est https://www.youtube.com/@creeperfarm");
+    }
+    if (msg.content === prefix + "twitter" || msg.content === prefix + "x") {
+        msg.reply("Le lien du compte Twitter (X) est https://twitter.com/FarmCreeper");
+    }
+    if (msg.content === prefix + "tiktok") {
+        msg.reply("Le lien du compte TikTok est https://www.tiktok.com/@creeperfarm");
+    }
+    if (msg.content === prefix + "github") {
+        msg.reply("Le lien du compte GitHub est https://github.com/creeperfarm")
+    }
+    if (msg.content === prefix + "instagram") {
+        msg.reply("Le lien du compte Instagram est https://www.instagram.com/creeperfarm/")
+    }
+    if (msg.content === prefix + "kick") {
+        msg.reply("Le lien duu compte kick est https://www.kick.com/creeperfarm")
+    }
+    if (msg.content === prefix + "réseaux" || msg.content === prefix + "reseaux") {
+        msg.reply("Le lien de tous les réseaux est https://linktr.ee/creeperfarm")
     }
 });
 

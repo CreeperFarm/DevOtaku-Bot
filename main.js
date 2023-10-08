@@ -5,15 +5,18 @@ const client = new Client({intents: []});
 let rawdata = fs.readFileSync('config.json');
 let config = JSON.parse(rawdata);
 
-
 const TOKEN = config.botToken;
-const prefix = config.prefix;
+prefix = "!";
+//const prefix = config.prefix;
 
 client.on("ready", () => {
-    console.log("Logged in as " + client.user.tag + "!");
+    console.log("Logged in as " + client.user.tag + "! The prefix is " + prefix + " .");
 });
 
-client.on("message", msg => {
+client.on('messageCreate', msg => {
+
+    if (msg.author.bot) return
+
     if (msg.content === prefix + "ping") {
         msg.reply("Pong!");
     }

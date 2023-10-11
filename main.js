@@ -82,7 +82,7 @@ client.on('messageCreate', msg => {
         console.log("Twitch link sent");
     }
     if (msg.content === prefix + "youtube" || msg.content === prefix + "yt" || msg.content === prefix + "ytb") {
-        msg.reply("Le lien de la chaine Youtube est https://www.youtube.com/@creeperfarm");
+        msg.reply("Le lien de la chains Youtube est https://www.youtube.com/@creeperfarm");
         console.log("Youtube link sent");
     }
     if (msg.content === prefix + "twitter" || msg.content === prefix + "x") {
@@ -113,9 +113,30 @@ client.on('messageCreate', msg => {
 
 // Send a message every minute
 minutes = 0;
+hours = 0;
+days = 0;
+years = 0;
 setInterval(() => {
     minutes++;
-    console.log(`The bot is online since ${minutes} minute(s).`);
+    if (minutes >= 60) {
+        minutes -= 60;
+        hours++;
+    } else if (hours >= 24) {
+        hours -= 24;
+        days++;
+    } else if (days >= 365) {
+        days -= 365;
+        years++;
+    }
+    if (years === 0 && days === 0 && hours === 0) {
+        console.log(`The bot is online since ${minutes} minute(s).`);
+    } else if (years === 0 && days === 0) {
+        console.log(`The bot is online since ${hours} hour(s) and ${minutes} minute(s).`)
+    } else if (years === 0) {
+        console.log(`The bot is online since ${days} day(s) , ${hours} hour(s) and ${minutes} minute(s).`)
+    } else {
+        console.log(`The bot is online since ${years} year(s) , ${days} day(s) , ${hours} hour(s) and ${minutes} minute(s).`)
+    }
 }, 60000);
 
 client.login(TOKEN)

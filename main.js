@@ -111,8 +111,11 @@ client.on('messageCreate', msg => {
     }
 });
 
+// Send a message every minute
+minutes = 0;
 setInterval(() => {
-    console.log("This message will appear in the console every minute.");
-  }, 60000);
+    minutes++;
+    console.log(`The bot is online since ${minutes} minute(s).`);
+}, 60000);
 
 client.login(TOKEN)

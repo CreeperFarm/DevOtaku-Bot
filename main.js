@@ -28,6 +28,8 @@ client.on('guildMemberAdd', member => {
             {name: "Nous sommes désormais " + member.guild.memberCount + " sur le serveur !"}
         )
     channel.send({ embeds: [embed]});
+    console.log(member.guild.memberCount + " members on the server");
+    console.log(member + " joined the server");
 });
 
 // Message when someone leave the server
@@ -36,6 +38,8 @@ client.on('guildMemberRemove', member => {
     const channel = member.guild.channels.cache.find(ch => ch.name === 'arriver-départ-✈');
     if (!channel) return;
     channel.send(`${member} a quitté le serveur, à bientôt !`);
+    console.log(member.guild.memberCount + " members on the server");
+    console.log(member + " left the server");
 });
 
 // Respond to commands
@@ -64,37 +68,51 @@ client.on('messageCreate', msg => {
             )
            .addFields({name: prefix + "", value: "Add soon ..."});
         msg.reply({ embeds: [embed]});
+        console.log("Help command sent");
     }
 
     if (msg.content === prefix + "ping") {
         msg.reply("Pong!");
+        console.log("Pong!");
     }
 
     // Social networks links
     if (msg.content === prefix + "twitch") {
         msg.reply("Le lien de la chaîne Twitch est https://www.twitch.tv/creeperfarm");
+        console.log("Twitch link sent");
     }
     if (msg.content === prefix + "youtube" || msg.content === prefix + "yt" || msg.content === prefix + "ytb") {
         msg.reply("Le lien de la chaine Youtube est https://www.youtube.com/@creeperfarm");
+        console.log("Youtube link sent");
     }
     if (msg.content === prefix + "twitter" || msg.content === prefix + "x") {
         msg.reply("Le lien du compte Twitter (X) est https://twitter.com/FarmCreeper");
+        console.log("Twitter link sent");
     }
     if (msg.content === prefix + "tiktok") {
         msg.reply("Le lien du compte TikTok est https://www.tiktok.com/@creeperfarm");
+        console.log("TikTok link sent");
     }
     if (msg.content === prefix + "github") {
         msg.reply("Le lien du compte GitHub est https://github.com/creeperfarm")
+        console.log("GitHub link sent");
     }
     if (msg.content === prefix + "instagram") {
         msg.reply("Le lien du compte Instagram est https://www.instagram.com/creeperfarm/")
+        console.log("Instagram link sent");
     }
     if (msg.content === prefix + "kick") {
         msg.reply("Le lien duu compte kick est https://www.kick.com/creeperfarm")
+        console.log("Kick link sent");
     }
     if (msg.content === prefix + "réseaux" || msg.content === prefix + "reseaux") {
         msg.reply("Le lien de tous les réseaux est https://linktr.ee/creeperfarm")
+        console.log("All links sent");
     }
 });
+
+setInterval(() => {
+    console.log("This message will appear in the console every minute.");
+  }, 60000);
 
 client.login(TOKEN)

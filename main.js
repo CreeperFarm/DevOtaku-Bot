@@ -139,4 +139,21 @@ setInterval(() => {
     }
 }, 60000);
 
+client.on('messageCreate', msg => {
+    if (msg.author.bot) return;
+
+    if (msg.content === prefix + "uptime" || msg.content === prefix + "up") {
+        if (years === 0 && days === 0 && hours === 0) {
+            client.reply(`The bot is online since ${minutes} minute(s).`);
+        } else if (years === 0 && days === 0) {
+            client.reply(`The bot is online since ${hours} hour(s) and ${minutes} minute(s).`)
+        } else if (years === 0) {
+            client.reply(`The bot is online since ${days} day(s) , ${hours} hour(s) and ${minutes} minute(s).`)
+        } else {
+            client.reply(`The bot is online since ${years} year(s) , ${days} day(s) , ${hours} hour(s) and ${minutes} minute(s).`)
+        }
+        console.log("Up time send");
+    }
+});
+
 client.login(TOKEN)
